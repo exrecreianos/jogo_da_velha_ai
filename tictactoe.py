@@ -1,3 +1,5 @@
+from random import randint
+
 
 class tictactoe():
     
@@ -47,21 +49,44 @@ class tictactoe():
         while True:
             self.view()
 
-            print("Player {}: ".format(self.turn))
-            movement = int(input())
+            print("\nPlayer {}: ".format(self.turn))
+            if self.turn == 1:
+                if not self.player1 is None:
+                    movement = self.player1.play(self.board)
+                else:
+                    movement = int(input())
+            else:
+                if not self.player2 is None:
+                    movement = self.player2.play(self.board)
+                else:
+                    movement = int(input())
+            print("")
             self.move(movement)
 
             win = self.winner()
             if not win: continue
             if win == self.p_char:
-                print("Player 1 Wins!")
+                self.view()
+                print("\nPlayer 1 Wins!")
                 input()
                 exit(0)
             if win == self.c_char:
-                print("Player 2 Wins!")
+                self.view()
+                print("\nPlayer 2 Wins!")
                 input()
                 exit(0)
 
 
-game = tictactoe()
-game.play()
+class player():
+    def __init__(self, name='P1'):
+        self.name = name
+
+    def play(self, board):
+        possible = [t for t in board if t != 'X' or t != 'O' ]
+        movement = randint(0, len(possible))
+        return int(possible[movement])
+
+P1 = player("P1")
+# P2 = player("P2")
+game = tictactoe(player1=P1)
+game.play() 
